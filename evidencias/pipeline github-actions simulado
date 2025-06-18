@@ -1,0 +1,32 @@
+name: CI/CD Pipeline Simulado
+
+on:
+  push:
+    branches:
+      - main  # No se pushea a la rama main directamente
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # windows-latest, macos-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v2
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # u otra versión que use tu proyecto
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Ejecutar pruebas
+        run: npm test
+
+      - name: Ejecutar Dependency-Check
+        run: |
+          ./dependency-check/bin/dependency-check.sh \
+            --project "SafeNotes" \
+            --scan . \
+            --format "HTML"/
